@@ -3,32 +3,32 @@ import { StandardProps, CommonEventFunction } from './common'
 import { StyleProp, ViewStyle } from 'react-native'
 interface ButtonProps extends StandardProps {
   /** 按钮的大小
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony_hybrid
    * @default default
    */
   size?: keyof ButtonProps.Size
   /** 按钮的样式类型
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony, harmony_hybrid
    * @default default
    */
   type?: keyof ButtonProps.Type
   /** 按钮是否镂空，背景色透明
-   * @supported weapp, alipay, swan, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, qq, jd, h5, rn, harmony, harmony_hybrid
    * @default false
    */
   plain?: boolean
   /** 是否禁用
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony, harmony_hybrid
    * @default false
    */
   disabled?: boolean
   /** 名称前是否带 loading 图标
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony, harmony_hybrid
    * @default false
    */
   loading?: boolean
   /** 用于 `<form/>` 组件，点击分别会触发 `<form/>` 组件的 submit/reset 事件
-   * @supported weapp, alipay, swan, tt, qq, jd
+   * @supported weapp, alipay, swan, tt, qq, jd, harmony
    */
   formType?: keyof ButtonProps.FormType
   /** 微信开放能力
@@ -37,7 +37,7 @@ interface ButtonProps extends StandardProps {
   openType?: ButtonProps.OpenType
   /** 指定按下去的样式类。当 `hover-class="none"` 时，没有点击态效果
    * @default button-hover
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony_hybrid
    * @rn 支持 hoverStyle 属性，但框架未支持 hoverClass
    */
   hoverClass?: string
@@ -53,12 +53,12 @@ interface ButtonProps extends StandardProps {
   hoverStopPropagation?: boolean
   /** 按住后多久出现点击态，单位毫秒
    * @default 20
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony_hybrid
    */
   hoverStartTime?: number
   /** 手指松开后点击态保留时间，单位毫秒
    * @default 70
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony_hybrid
    */
   hoverStayTime?: number
   /** 指定返回用户信息的语言，zh_CN 简体中文，zh_TW 繁体中文，en 英文。
@@ -127,8 +127,10 @@ interface ButtonProps extends StandardProps {
    * @supported swan
    */
   subscribeId?: string
-  /** 打开群资料卡时，传递的群号
-   * @supported qq
+  /** 群聊 id
+   * @qq 打开群资料卡时，传递的群号
+   * @tt 通过创建聊天群、查询群信息获取
+   * @supported qq, tt
    */
   groupId?: string
   /** 打开频道页面时，传递的频道号
@@ -169,6 +171,11 @@ interface ButtonProps extends StandardProps {
    * @supported tt
    */
   dataAwemeId?: string
+  /**
+   * 是否开启半屏模式
+   * @supported tt
+   */
+  dataIsHalfPage?: boolean
   /** 用户点击该按钮时，会返回获取到的用户信息，回调的detail数据与 Taro.getUserInfo 返回的一致
    *
    * 生效时机: `open-type="getUserInfo"`
@@ -271,6 +278,11 @@ interface ButtonProps extends StandardProps {
    * @supported tt
    */
   onOpenAwemeUserProfile?: CommonEventFunction
+  /**
+   * 加群后触发
+   * @supported tt
+   */
+  onJoinGroup?: CommonEventFunction<{ errMsg: string; errNo: number }>
 }
 declare namespace ButtonProps {
   /** size 的合法值 */
@@ -515,7 +527,7 @@ declare namespace ButtonProps {
 }
 /** 按钮
  * @classification forms
- * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony
+ * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony, harmony_hybrid
  * @example_react
  * ```tsx
  * export default class PageButton extends Component {
