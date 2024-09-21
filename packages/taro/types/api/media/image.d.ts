@@ -19,7 +19,7 @@ declare module '../../index' {
       /** 需要预览的图片链接列表。 */
       urls: string[]
       /**
-       * 微信端为当前显示图片的链接，支付宝端为当前显示图片的索引值
+       * 当前显示图片的http链接
        */
       current?: string | number
       /**
@@ -221,7 +221,7 @@ declare module '../../index' {
       /** 压缩后图片的宽度，单位为px，若不填写则默认以 compressedHeight 为准等比缩放。 */
       compressedWidth?: number
       /** 压缩后图片的高度，单位为px，若不填写则默认以 compressedWidth 为准等比缩放。 */
-      compressHeight?: number
+      compressedHeight?: number
       /** 接口调用成功的回调函数 */
       success?: (result: SuccessCallbackResult) => void
     }
@@ -315,16 +315,16 @@ declare module '../../index' {
       '4:5'
       /** 宽高比为5比4 */
       '5:4'
-      /** 宽高比为6比19 */
-      '6:19'
-      /** 宽高比为19比6 */
-      '19:6'
+      /** 宽高比为9比16 */
+      '9:16'
+      /** 宽高比为16比9 */
+      '16:9'
     }
   }
 
   interface TaroStatic {
     /** 保存图片到系统相册。需要[用户授权](https://developers.weixin.qq.com/miniprogram/dev/framework/open-ability/authorize.html) scope.writePhotosAlbum
-     * @supported weapp, alipay, swan, tt, h5, rn
+     * @supported weapp, alipay, swan, tt, h5, rn, harmony_hybrid
      * @example
      * ```tsx
      * Taro.saveImageToPhotosAlbum({
@@ -348,7 +348,7 @@ declare module '../../index' {
     previewMedia(option: previewMedia.Option): Promise<TaroGeneral.CallbackResult>
 
     /** 在新页面中全屏预览图片。预览的过程中用户可以进行保存图片、发送给朋友等操作。
-     * @supported weapp, alipay, swan, tt, h5, rn
+     * @supported weapp, alipay, swan, tt, h5, rn, harmony_hybrid
      * @example
      * ```tsx
      * Taro.previewImage({
@@ -361,7 +361,7 @@ declare module '../../index' {
     previewImage(option: previewImage.Option): Promise<TaroGeneral.CallbackResult>
 
     /** 获取图片信息。网络图片需先配置download域名才能生效。
-     * @supported weapp, alipay, swan, tt, h5, rn
+     * @supported weapp, alipay, swan, tt, h5, rn, harmony, harmony_hybrid
      * @example
      * ```tsx
      * Taro.getImageInfo({
@@ -421,7 +421,7 @@ declare module '../../index' {
      *   type: 'image',
      *   success: function (res) {
      *     // tempFilePath可以作为img标签的src属性显示图片
-     *     const tempFilePaths = res.tempFilePaths
+     *     const tempFilePaths = res.tempFiles
      *   }
      * })
      * ```
@@ -431,7 +431,7 @@ declare module '../../index' {
 
     /**
      * 从本地相册选择图片或使用相机拍照。
-     * @supported weapp, alipay, swan, tt, h5, rn
+     * @supported weapp, alipay, swan, tt, h5, rn, harmony_hybrid
      * @example
      * ```tsx
      * Taro.chooseImage({

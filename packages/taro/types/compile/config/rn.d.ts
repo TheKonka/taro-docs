@@ -2,6 +2,7 @@ import type Webpack from 'webpack'
 import type Chain from 'webpack-chain'
 import type webpackDevServer from 'webpack-dev-server'
 import type HtmlWebpackPlugin from 'html-webpack-plugin'
+import type { RollupOptions } from 'rollup'
 import type { IOption, IPostcssOption } from './util'
 
 export interface IRNConfig {
@@ -20,7 +21,7 @@ export interface IRNConfig {
   /** [less](https://lesscss.org/usage/#less-options) 相关配置 */
   less?: IOption
 
-  /** [stylus](https://github.com/NervJS/taro/blob/next/packages/taro-rn-style-transformer/README.md#rnstylus) 相关配置 */
+  /** [stylus](https://github.com/NervJS/taro/blob/main/packages/taro-rn-style-transformer/README.md#rnstylus) 相关配置 */
   stylus?: IOption
 
   /** 配置 postcss 相关插件 */
@@ -61,4 +62,24 @@ export interface IRNConfig {
 
   /** 设计稿尺寸换算规则 */
   deviceRatio?: TaroGeneral.TDeviceRatio
+
+  /** 原生组件编译配置 */
+  nativeComponents?: {
+    /**
+     * 外部依赖
+     */
+    external?: Array<string | RegExp> | ((arr: Array<string | RegExp>) => Array<string | RegExp>)
+    /**
+     * 设置外部依赖，如果返回 string, 则将该值作为 external， 我们默认将 node_modules 路径下的文件设置为外部依赖
+     */
+    exteranlResolve?: (importee: string, importer: string) => string
+    /**
+     * 组件输出路径，默认值为 'dist'
+     */
+    output?: string
+    /**
+     * 修改 Rollup 打包配置
+     */
+    modifyRollupConfig?: (config: RollupOptions, innerPlugins: { taroResolver: typeof taroResolver, styleTransformer: typeof styleTransformer }) => RollupOptions
+  }
 }

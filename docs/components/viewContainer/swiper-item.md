@@ -88,10 +88,12 @@ class App extends Component {
 | --- | --- | :---: | :---: | --- |
 | itemId | `string` |  | 否 | 该 swiper-item 的标识符 |
 | skipHiddenItemLayout | `boolean` | `false` | 否 | 是否跳过未显示的滑块布局，设为 true 可优化复杂情况下的滑动性能，但会丢失隐藏状态滑块的布局信息 |
+| deep | `boolean` | `false` | 否 | Swiper 循环状态下，前后垫片节点拷贝模式，用于修复 Vue 在 CustomElements 下的节点拷贝问题 |
 
 ### API 支持度
 
 | API | 微信小程序 | 百度小程序 | 抖音小程序 | 京东小程序 | H5 | React Native | Harmony |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| SwiperItemProps.itemId | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |  |
+| SwiperItemProps.itemId | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ | ✔️ |
 | SwiperItemProps.skipHiddenItemLayout | ✔️ |  |  |  |  |  |  |
+| SwiperItemProps.deep |  |  |  |  | ✔️ |  |  |

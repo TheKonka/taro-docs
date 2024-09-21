@@ -19,6 +19,7 @@ declare module './index' {
     shareTicket: string | undefined
     scene: number | undefined
     exitState?: any
+    $taroPath?: string
   }
 
   interface Show {
@@ -51,6 +52,7 @@ declare module './index' {
     onReachBottom?(): void
     onResize?(opt: PageResizeObject): void
     onShareAppMessage?(opt: ShareAppMessageObject): ShareAppMessageReturn
+    onShareTimeline?(): ShareTimelineReturnObject
     onTabItemTap?(opt: TabItemTapObject): void
     onTitleClick?(): void
     onUnload(): void
@@ -138,5 +140,7 @@ declare module './index' {
     path?: string
     /** 页面的组件选项 */
     options?: Record<string, unknown>
+    /** 获得一个 EventChannel 对象，用于页面间通讯 */
+    getOpenerEventChannel?(): Record<string, any>
   }
 }

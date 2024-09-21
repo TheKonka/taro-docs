@@ -38,13 +38,16 @@ declare module '../index' {
   /** @ignore */
   interface TARO_ENV_TYPE {
     [TaroGeneral.ENV_TYPE.WEAPP]: TaroGeneral.ENV_TYPE.WEAPP
-    [TaroGeneral.ENV_TYPE.WEB]: TaroGeneral.ENV_TYPE.WEB
-    [TaroGeneral.ENV_TYPE.RN]: TaroGeneral.ENV_TYPE.RN
     [TaroGeneral.ENV_TYPE.SWAN]: TaroGeneral.ENV_TYPE.SWAN
     [TaroGeneral.ENV_TYPE.ALIPAY]: TaroGeneral.ENV_TYPE.ALIPAY
     [TaroGeneral.ENV_TYPE.TT]: TaroGeneral.ENV_TYPE.TT
     [TaroGeneral.ENV_TYPE.QQ]: TaroGeneral.ENV_TYPE.QQ
     [TaroGeneral.ENV_TYPE.JD]: TaroGeneral.ENV_TYPE.JD
+    [TaroGeneral.ENV_TYPE.WEB]: TaroGeneral.ENV_TYPE.WEB
+    [TaroGeneral.ENV_TYPE.RN]: TaroGeneral.ENV_TYPE.RN
+    [TaroGeneral.ENV_TYPE.HARMONY]: TaroGeneral.ENV_TYPE.HARMONY
+    [TaroGeneral.ENV_TYPE.QUICKAPP]: TaroGeneral.ENV_TYPE.QUICKAPP
+    [TaroGeneral.ENV_TYPE.HARMONYHYBRID]: TaroGeneral.ENV_TYPE.HARMONYHYBRID
   }
 
   namespace interceptorify {
@@ -97,7 +100,7 @@ declare module '../index' {
     }): void
 
     /** 小程序获取和 Taro 相关的 App 信息
-     * @supported weapp, alipay, jd, qq, swan, tt, h5
+     * @supported weapp, alipay, jd, qq, swan, tt, h5, harmony, harmony_hybrid
      */
     getAppInfo(): getAppInfo.AppInfo
 
@@ -127,7 +130,13 @@ declare module '../index' {
     /** 小程序引用插件 JS 接口
      * @supported weapp, alipay, h5, rn, jd, qq, swan, tt, quickapp
      */
-    requirePlugin(pluginName: string): any
+    requirePlugin: {
+      (pluginName: string): any
+      /** @supported weapp */
+      (pluginName: string, success?: (mod: any) => any, error?: (e: { mod: any; errMsg: string }) => any): any;
+      /** @supported weapp */
+      async?: (pluginName: string) => Promise<any>
+    }
 
     /** 获取当前页面实例
      * @supported global
@@ -138,7 +147,7 @@ declare module '../index' {
     Current: getCurrentInstance.Current
 
     /** Vue3 插件，用于设置 `getApp()` 中的全局变量
-     * @supported weapp, alipay, h5, rn, jd, qq, swan, tt, quickapp
+     * @supported weapp, alipay, h5, rn, jd, qq, swan, tt, quickapp, harmony_hybrid
      * @example
      * ```js
      * // 使用插件

@@ -3,40 +3,40 @@ import { BaseEventOrigFunction, CommonEventFunction, StandardProps } from './com
 interface ScrollViewProps extends StandardProps {
   /** 允许横向滚动
    * @default false
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony, harmony_hybrid
    * @rn 二选一
    */
   scrollX?: boolean
   /** 允许纵向滚动
    * @default false
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony, harmony_hybrid
    * @rn 二选一
    */
   scrollY?: boolean
   /** 距顶部/左边多远时（单位px），触发 scrolltoupper 事件
    * @default 50
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony_hybrid
    */
   upperThreshold?: number
   /** 距底部/右边多远时（单位px），触发 scrolltolower 事件
    * @default 50
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony_hybrid
    */
   lowerThreshold?: number
   /** 设置竖向滚动条位置
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony_hybrid
    */
   scrollTop?: number
   /** 设置横向滚动条位置
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony_hybrid
    */
   scrollLeft?: number
   /** 值应为某子元素id（id不能以数字开头）。设置哪个方向可滚动，则在哪个方向滚动到该元素
-   * @supported weapp, alipay, swan, tt, qq, jd, h5
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, harmony_hybrid
    */
   scrollIntoView?: string
   /** 在设置滚动条位置时使用动画过渡
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony_hybrid
    * @default false
    */
   scrollWithAnimation?: boolean
@@ -85,13 +85,18 @@ interface ScrollViewProps extends StandardProps {
    * @default false
    */
   enhanced?: boolean
+  /** 使 scroll-view 下的 position sticky 特性生效，否则滚动一屏后 sticky 元素会被隐藏
+   * @supported weapp
+   * @default false
+   */
+  usingSticky?: boolean
   /** iOS 下 scroll-view 边界弹性控制 (同时开启 enhanced 属性后生效)
    * @supported weapp, swan
    * @default true
    */
   bounces?: boolean
   /** 滚动条显隐控制 (同时开启 enhanced 属性后生效)
-   * @supported weapp
+   * @supported weapp, harmony
    * @default true
    */
   showScrollbar?: boolean
@@ -130,23 +135,39 @@ interface ScrollViewProps extends StandardProps {
    * @supported weapp
    * @default false
    */
-  enablePassive?: string
+  enablePassive?: boolean
   /** 渲染模式
    * list - 列表模式。只会渲染在屏节点，会根据直接子节点是否在屏来按需渲染，若只有一个直接子节点则性能会退化
    * custom - 自定义模式。只会渲染在屏节点，子节点可以是 sticky-section list-view grid-view 等组件
-   * @supported weapp
+   * nested - 嵌套模式。用于处理父子 scroll-view 间的嵌套滚动，子节点可以是 nested-scroll-header nested-scroll-body 组件或自定义 refresher
+   * @supported weapp, harmony
    * @default 'list'
    */
-  type?: 'list' | 'custom'
+  type?: 'list' | 'custom' | 'nested'
   /** 是否反向滚动。一般初始滚动位置是在顶部，反向滚动则是在底部。
    * @supported weapp
    * @default false
    */
   reverse?: boolean
+  /** 是否对溢出进行裁剪，默认开启
+   * @supported weapp
+   * @default true
+   */
+  clip?: boolean
   /** 指定视口外渲染区域的距离，默认情况下视口外节点不渲染。指定 cache-extent 可优化滚动体验和加载速度，但会提高内存占用且影响首屏速度，可按需启用。
    * @supported weapp
    */
   cacheExtent?: number
+  /** 指定 scroll-view 触发滚动的最小拖动距离。仅在 scroll-view 和其他组件存在手势冲突时使用，可通过调整该属性使得滚动更加灵敏。
+   * @supported weapp
+   * @default 18
+   */
+  minDragDistance?: number
+  /** 长度为 4 的数组，按 top、right、bottom、left 顺序指定内边距
+   * @supported weapp
+   * @default [0,0,0,0]
+   */
+  padding?: [number, number, number, number]
   /** 只 scroll-into-view 到 cacheExtent 以内的目标节点，性能更佳
    * @supported weapp
    * @default false
@@ -157,20 +178,55 @@ interface ScrollViewProps extends StandardProps {
    * center - 目标节点显示在视口中间
    * end - 目标节点显示在视口结束处
    * nearest - 目标节点在就近的视口边缘显示，若节点已在视口内则不触发滚动
-   * @supported weapp, h5
+   * @supported weapp, h5, harmony_hybrid
    * @default 'start'
    */
   scrollIntoViewAlignment?: 'start' | 'center' | 'end' | 'nearest'
+  /** 开启下拉二级能力
+   * @supported weapp
+   * @default false
+   */
+  refresherTwoLevelEnabled?: boolean
+  /** 设置打开/关闭二级
+   * @supported weapp
+   * @default false
+   */
+  refresherTwoLevelTriggered?: boolean
+  /** 下拉二级阈值
+   * @supported weapp
+   * @default 150
+   */
+  refresherTwoLevelThreshold?: number
+  /** 滑动返回时关闭二级的阈值
+   * @supported weapp
+   * @default 80
+   */
+  refresherTwoLevelCloseThreshold?: number
+  /** 处于二级状态时是否可滑动
+   * @supported weapp
+   * @default false
+   */
+  refresherTwoLevelScrollEnabled?: boolean
+  /** 惯性滚动是否触发下拉刷新
+   * @supported weapp
+   * @default false
+   */
+  refresherBallisticRefreshEnabled?: boolean
+  /** 即将打开二级时否定住
+   * @supported weapp
+   * @default false
+   */
+  refresherTwoLevelPinned?: boolean
   /** 滚动到顶部/左边，会触发 scrolltoupper 事件
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony_hybrid
    */
   onScrollToUpper?: CommonEventFunction
   /** 滚动到底部/右边，会触发 scrolltolower 事件
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony_hybrid
    */
   onScrollToLower?: CommonEventFunction
   /** 滚动时触发
-   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn
+   * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony, harmony_hybrid
    */
   onScroll?: BaseEventOrigFunction<ScrollViewProps.onScrollDetail>
   /** 滚动开始事件
@@ -201,6 +257,10 @@ interface ScrollViewProps extends StandardProps {
    * @supported weapp
    */
   onRefresherWillRefresh?: CommonEventFunction
+  /** 下拉刷新状态回调
+   * @supported weapp
+   */
+  onRefresherStatusChange?: CommonEventFunction<ScrollViewProps.RefresherStatusChange>
   /** 滑动开始事件 (同时开启 enhanced 属性后生效)
    * @supported weapp
    */
@@ -252,6 +312,30 @@ declare namespace ScrollViewProps {
     /** 滚动速度 */
     velocity: number
   }
+  interface RefresherStatusChange {
+    status: RefreshStatus
+    dy: number
+  }
+  const enum RefreshStatus {
+    // 空闲
+    Idle,
+    // 超过下拉刷新阈值，同 bind:refresherwillRefresh 触发时机
+    CanRefresh,
+    // 下拉刷新，同 bind:refresherrefresh 触发时机
+    Refreshing,
+    // 下拉刷新完成，同 bind:refresherrestore 触发时机
+    Completed,
+    // 下拉刷新失败
+    Failed,
+    // 超过下拉二级阈值
+    CanTwoLevel,
+    // 开始打开二级
+    TwoLevelOpening,
+    // 打开二级
+    TwoLeveling,
+    // 开始关闭二级
+    TwoLevelClosing,
+  }
 }
 /** 可滚动视图区域。使用竖向滚动时，需要给scroll-view一个固定高度，通过 WXSS 设置 height。组件属性的长度单位默认为 px
  *
@@ -259,7 +343,7 @@ declare namespace ScrollViewProps {
  * H5 中 ScrollView 组件是通过一个高度（或宽度）固定的容器内部滚动来实现的，因此务必正确的设置容器的高度。例如: 如果 ScrollView 的高度将 body 撑开，就会同时存在两个滚动条（body 下的滚动条，以及 ScrollView 的滚动条）。
  * 微信小程序 中 ScrollView 组件如果设置 scrollX 横向滚动时，并且子元素为多个时（单个子元素时设置固定宽度则可以正常横向滚动），需要通过 WXSS 设置 `white-space: nowrap` 来保证元素不换行，并对 ScrollView 内部元素设置 `display: inline-block` 来使其能够横向滚动。
  * @classification viewContainer
- * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony
+ * @supported weapp, alipay, swan, tt, qq, jd, h5, rn, harmony, harmony_hybrid
  * @example_react
  * ```tsx
  * export default class PageView extends Component {
